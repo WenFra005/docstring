@@ -66,3 +66,27 @@ def add_page_number(pdf):
     pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 20)
     pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
     pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
+
+def convert_docstring_to_pdf(pdf, docstrings):
+    
+    pdf.add_page()
+    pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["brealk_margin"])
+
+    for line in docstrings.split("\n"):
+        if line.starstswith("1.     "):
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_1"]["style"],
+                         PDF_CONFIG["title_format"]["level_1"]["size"])
+        elif line.startswith("1.1   "):
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_2"]["style"],
+                         PDF_CONFIG["title_format"]["level_2"]["size"])
+        elif line.startswith("1.1.1 "):
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_3"]["style"],
+                         PDF_CONFIG["title_format"]["level_3"]["size"])
+        else:
+            pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
+        pdf.multi_cell(0, 10, line)
+
+    for page_num in range(2, pdf.page_no() + 1):
+        pdf.page = page_num
+        add_page_number(pdf)            
+    
