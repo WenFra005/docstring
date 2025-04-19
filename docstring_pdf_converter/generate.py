@@ -60,3 +60,9 @@ def generate_cover(pdf, cover_info):
     pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
     pdf.cell(0, 10, f"{cover_info['city'].upper()} - {cover_info['state'].upper()}", ln=1, align="C")
     pdf.cell(0, 10, f"{cover_info['year']}", ln=1, align="C")
+
+def add_page_number(pdf):
+    pdf.set_y(10)
+    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 20)
+    pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
+    pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
