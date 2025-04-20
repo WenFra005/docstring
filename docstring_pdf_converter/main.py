@@ -25,7 +25,7 @@ def main():
         "state": state,
         "year": datetime.now().year
     }
-
+    pdf.add_page()
     add_header(pdf, cover_info)
 
     module_name = input("Nome do módulo (sem .py): ")
