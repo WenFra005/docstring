@@ -26,7 +26,7 @@ def main():
         "year": datetime.now().year
     }
 
-    generate_cover(pdf, cover_info)
+    add_header(pdf, cover_info)
 
     module_name = input("Nome do módulo (sem .py): ")
     module_name = importlib.import_module(module_name)
