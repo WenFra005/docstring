@@ -24,42 +24,15 @@ def extract_docstrings(module):
                 function_counter += 1
     return "\n".join(docstrings)
 
-def generate_cover(pdf, cover_info):
-
-    pdf.set_left_margin(PDF_CONFIG["margin_left"])
-    pdf.set_right_margin(PDF_CONFIG["margin_right"])
-    pdf.set_top_margin(PDF_CONFIG["margin_top"])
-
-    pdf.add_page()
-
+def add_header(pdf, cover_info):
+    pdf.set_y(PDF_CONFIG["margin_top"])
     pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
+
     pdf.cell(0, 10,
-             f"{cover_info['institution'].upper() 
+             f"{cover_info['institution'].upper()
                 if cover_info['institution'] 
-                else 'AUTOR INDEPENDENTE'}", ln=1, align="C"
-            )
-
-    for _ in range(4):
-        pdf.cell(10)
-
-    pdf.cell(0, 10, 
-             f"{cover_info['author'].upper() 
-                if cover_info['author'] 
-                else 'NOME DO AUTOR'}", ln=1, align="C"
-            )
-
-    for _ in range(3):  
-        pdf.cell(10)
-
-    pdf.cell(0, 10, f"{cover_info['title'].upper()}", ln=1, align="C")
-    pdf.cell(0, 10, f"{cover_info['subtitle'].upper()}", ln=1, align="C")
-
-    pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-    pdf_height = pdf.h - PDF_CONFIG["margin_bottom"]
-    pdf.set_y(pdf_height - 20)
-    pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-    pdf.cell(0, 10, f"{cover_info['city'].upper()} - {cover_info['state'].upper()}", ln=1, align="C")
-    pdf.cell(0, 10, f"{cover_info['year']}", ln=1, align="C")
+                else ''}",
+                ln=1, align="L")
 
 def add_page_number(pdf):
     pdf.set_y(10)
