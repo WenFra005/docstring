@@ -1,7 +1,7 @@
 import importlib
 from datetime import datetime
 from fpdf import FPDF
-from docstring_pdf_converter.generate import generate_cover, extract_docstrings, convert_docstring_to_pdf
+from docstring_pdf_converter.generate import add_header, extract_docstrings, convert_docstring_to_pdf
 
 def main():
     pdf = FPDF()
@@ -25,8 +25,8 @@ def main():
         "state": state,
         "year": datetime.now().year
     }
-
-    generate_cover(pdf, cover_info)
+    pdf.add_page()
+    add_header(pdf, cover_info)
 
     module_name = input("Nome do módulo (sem .py): ")
     module_name = importlib.import_module(module_name)
