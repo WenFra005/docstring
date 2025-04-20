@@ -28,11 +28,13 @@ def add_header(pdf, cover_info):
     pdf.set_y(PDF_CONFIG["margin_top"])
     pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
 
-    pdf.cell(0, 10,
-             f"{cover_info['institution'].upper()
-                if cover_info['institution'] 
-                else ''}",
-                ln=1, align="L")
+    pdf.cell(0, 10, f"Autot: {cover_info['author']}", ln=0, aling="L")
+    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 100)
+    pdf.cell(0, 10, f"Instituição: {cover_info['institution']}", ln=1, aling="R")
+
+    pdf.cell(0, 10, f"Local: {cover_info['city']} - {cover_info['state']}", ln=0, aling="L")
+    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 100)
+    pdf.cell(0, 10, f"Ano: {cover_info['year']}", ln=1, aling="R")
 
 def add_page_number(pdf):
     pdf.set_y(10)
