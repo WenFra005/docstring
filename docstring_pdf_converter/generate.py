@@ -70,10 +70,10 @@ def add_page_number(pdf):
 def convert_docstring_to_pdf(pdf, docstrings):
     
     pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["brealk_margin"])
+    pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["break_margin"])
 
     for line in docstrings.split("\n"):
-        if line.starstswith("1.     "):
+        if line.startswith("1.     "):
             pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_1"]["style"],
                          PDF_CONFIG["title_format"]["level_1"]["size"])
         elif line.startswith("1.1   "):
