@@ -33,7 +33,7 @@ def main():
     docstrings = extract_docstrings(module_name)
 
     output_file = input("Nome do arquivo de saída (sem extensão): ")
-    convert_docstring_to_pdf(docstrings, output_file)
+    convert_docstring_to_pdf(docstrings, cover_info, output_file)
 
     print(f"PDF gerado com sucesso: {output_file}.pdf")
 
