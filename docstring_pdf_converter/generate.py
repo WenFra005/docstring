@@ -23,27 +23,27 @@ class CustomPDF(FPDF):
 
 def extract_docstrings(module):
     module_counter = 1
-    docstrings = [f"{module_counter}.   {module.__name__}\n"]
+    docstrings = [f"{module_counter}. {module.__name__}\n"]  
+    function_counter = 1 
+
     for name, obj in inspect.getmembers(module):
         if inspect.isclass(obj):
-            class_counter = 1
-            docstrings.append(f"{module_counter}.{class_counter}    {name}\n")
+            class_counter = function_counter 
+            docstrings.append(f"{module_counter}.{class_counter} {name}\n")
+            method_counter = 1
             for method_name, method in inspect.getmembers(obj, inspect.isfunction):
-                method_counter = 1
                 docstring = inspect.getdoc(method)
                 if docstring:
-                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter}   "
-                                      f"{method_name}\n{docstring}\n")
+                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter} {method_name}\n{docstring}\n")
                     method_counter += 1
-            class_counter +=1
+            function_counter += 1
         elif inspect.isfunction(obj):
-            function_counter = 1
             docstring = inspect.getdoc(obj)
             if docstring:
-                docstrings.append(f"{module_counter}.{function_counter}     {name}\n{docstring}\n")
+                docstrings.append(f"{module_counter}.{function_counter} {name}\n{docstring}\n")
                 function_counter += 1
-    return "\n".join(docstrings)
 
+    return "".join(docstrings)
 
 def convert_docstring_to_pdf(docstrings, cover_info ,output_file):
     pdf = CustomPDF(cover_info)
@@ -69,6 +69,5 @@ def convert_docstring_to_pdf(docstrings, cover_info ,output_file):
             pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
         pdf.multi_cell(0, 10, line)
 
-    pdf.output(f"{output_file}.pdf")    
+    pdf.output(f"{output_file}.pdf")
 
-    
