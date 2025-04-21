@@ -23,25 +23,24 @@ class CustomPDF(FPDF):
 
 def extract_docstrings(module):
     module_counter = 1
-    class_counter = 1  # Inicializa o contador de classes fora do loop principal
+    docstrings = [f"{module_counter}. {module.__name__}\n"]  # Nome do módulo com um único espaço
     function_counter = 1  # Inicializa o contador de funções no nível do módulo
-    docstrings = [f"{module_counter}.   {module.__name__}\n"]  # Nome do módulo
 
     for name, obj in inspect.getmembers(module):
         if inspect.isclass(obj):
-            docstrings.append(f"{module_counter}.{class_counter}    {name}\n")  # Nome da classe
+            class_counter = function_counter  # Sincroniza o contador de classes com o de funções
+            docstrings.append(f"{module_counter}.{class_counter} {name}\n")  # Nome da classe com um único espaço
             method_counter = 1  # Inicializa o contador de métodos para cada classe
             for method_name, method in inspect.getmembers(obj, inspect.isfunction):
                 docstring = inspect.getdoc(method)
                 if docstring:
-                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter}   "
-                                      f"{method_name}\n{docstring}\n")  # Método
+                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter} {method_name}\n{docstring}\n")  # Método com um único espaço
                     method_counter += 1
-            class_counter += 1  # Incrementa o contador de classes
+            function_counter += 1  # Incrementa o contador de funções após processar uma classe
         elif inspect.isfunction(obj):
             docstring = inspect.getdoc(obj)
             if docstring:
-                docstrings.append(f"{module_counter}.{function_counter}     {name}\n{docstring}\n")  # Função
+                docstrings.append(f"{module_counter}.{function_counter} {name}\n{docstring}\n")  # Função com um único espaço
                 function_counter += 1  # Incrementa o contador de funções no nível do módulo
 
     return "".join(docstrings)
