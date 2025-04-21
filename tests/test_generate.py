@@ -21,14 +21,15 @@ def test_extract_docstrings():
     # Call the function
     result = extract_docstrings(mock_module)
 
-    # Expected output
+    # Expected output com um único espaço entre a numeração e o nome
     expected = (
-        "1.   mock_module\n"
-        "1.1    MockClass\n"
-        "1.1.1   mock_method\nMock method docstring.\n"
-        "1.2     mock_function\nMock function docstring.\n"
+        "1. mock_module\n"
+        "1.1 MockClass\n"
+        "1.1.1 mock_method\nMock method docstring.\n"
+        "1.2 mock_function\nMock function docstring.\n"
     )
 
+    # Comparação direta sem normalização, pois o formato foi ajustado
     assert result == expected
 
 @patch("docstring_pdf_converter.generate.CustomPDF")
