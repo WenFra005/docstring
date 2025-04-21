@@ -8,17 +8,18 @@ class CustomPDF(FPDF):
         self.cover_info = cover_info
 
     def header(self):
+        self.set_y(10)
         self.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
         self.cell(0, 10, self.cover_info["title"], 0, 1, "C")
         self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
-        self.cell(0, 10, f"Autor: {self.cover_info['author']} | Instituição: {self.cover_info['institution']}", 0, 1, "C")
+        self.cell(0, 10, f"Autor: {self.cover_info['author']}", 0, 1, "C")
         self.cell(0, 10, f"Local: {self.cover_info['city']} - {self.cover_info['state']} | Ano: {self.cover_info['year']}", 0, 1, "C")
         self.ln(5)
 
     def footer(self):
         self.set_y(-15)
         self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
-        self.cell(0, 10, f"Página {self.page_no()}", 0, 0, "C")
+        self.cell(0, 10, f"{self.page_no()}", 0, 0, "R")
 
 def extract_docstrings(module):
     module_counter = 1
