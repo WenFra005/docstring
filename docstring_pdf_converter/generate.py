@@ -3,9 +3,16 @@ from fpdf import FPDF
 from docstring_pdf_converter.config import PDF_CONFIG
 
 class CustomPDF(FPDF):
+    def __init__(self, cover_info):
+        super().__init__()
+        self.cover_info = cover_info
+
     def header(self):
         self.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-        self.cell(0, 10, "Cabeçalho do Documento", 0, 1, "C")
+        self.cell(0, 10, self.cover_info["title"], 0, 1, "C")
+        self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
+        self.cell(0, 10, f"Autor: {self.cover_info['author']} | Instituição: {self.cover_info}", 0, 1, "C")
+        self.cell(0, 10, f"Local: {self.cover_info['city']} - {self.cover_info['state']} | Ano: {self.cover_info['year']}", 0, 1, "C")
         self.ln(5)
 
     def footer(self):
@@ -54,8 +61,8 @@ def add_page_number(pdf):
     pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
     pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
 
-def convert_docstring_to_pdf(docstrings, output_file):
-    pdf = CustomPDF()
+def convert_docstring_to_pdf(docstrings, cover_info ,output_file):
+    pdf = CustomPDF(cover_info)
 
     pdf.set_left_margin(PDF_CONFIG["margin_left"])
     pdf.set_top_margin(PDF_CONFIG["margin_top"])
@@ -79,3 +86,5 @@ def convert_docstring_to_pdf(docstrings, output_file):
         pdf.multi_cell(0, 10, line)
 
     pdf.output(f"{output_file}.pdf")    
+
+    
