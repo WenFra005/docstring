@@ -44,11 +44,6 @@ def extract_docstrings(module):
                 function_counter += 1
     return "\n".join(docstrings)
 
-def add_page_number(pdf):
-    pdf.set_y(10)
-    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 20)
-    pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
-    pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
 
 def convert_docstring_to_pdf(docstrings, cover_info ,output_file):
     pdf = CustomPDF(cover_info)
