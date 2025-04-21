@@ -10,7 +10,7 @@ class CustomPDF(FPDF):
 
     def footer(self):
         self.set_y(-15)
-        self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size" - 2])
+        self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
         self.cell(0, 10, f"Página {self.page_no()}", 0, 0, "C")
 
 def extract_docstrings(module):
