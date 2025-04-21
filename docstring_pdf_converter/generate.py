@@ -1,5 +1,17 @@
 import inspect
+from fpdf import FPDF
 from docstring_pdf_converter.config import PDF_CONFIG
+
+class CustomPDF(FPDF):
+    def header(self):
+        self.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
+        self.cell(0, 10, "Cabeçalho do Documento", 0, 1, "C")
+        self.ln(5)
+
+    def footer(self):
+        self.set_y(-15)
+        self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size" - 2])
+        self.cell(0, 10, f"Página {self.page_no()}", 0, 0, "C")
 
 def extract_docstrings(module):
     module_counter = 1
@@ -42,15 +54,15 @@ def add_page_number(pdf):
     pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
     pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
 
-def convert_docstring_to_pdf(pdf, docstrings):
-    
+def convert_docstring_to_pdf(docstrings):
+    pdf = CustomPDF()
+
     pdf.set_left_margin(PDF_CONFIG["margin_left"])
     pdf.set_top_margin(PDF_CONFIG["margin_top"])
     pdf.set_right_margin(PDF_CONFIG["margin_right"])
     pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["margin_bottom"])
 
     pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["break_margin"])
 
     for line in docstrings.split("\n"):
         if line.startswith("1.     "):
@@ -66,7 +78,4 @@ def convert_docstring_to_pdf(pdf, docstrings):
             pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
         pdf.multi_cell(0, 10, line)
 
-    for page_num in range(2, pdf.page_no() + 1):
-        pdf.page = page_num
-        add_page_number(pdf)            
-    
+    pdf.output("docstrings.pdf")    
