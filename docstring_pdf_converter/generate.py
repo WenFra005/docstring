@@ -11,7 +11,7 @@ class CustomPDF(FPDF):
         self.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
         self.cell(0, 10, self.cover_info["title"], 0, 1, "C")
         self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
-        self.cell(0, 10, f"Autor: {self.cover_info['author']} | Instituição: {self.cover_info}", 0, 1, "C")
+        self.cell(0, 10, f"Autor: {self.cover_info['author']} | Instituição: {self.cover_info['institution']}", 0, 1, "C")
         self.cell(0, 10, f"Local: {self.cover_info['city']} - {self.cover_info['state']} | Ano: {self.cover_info['year']}", 0, 1, "C")
         self.ln(5)
 
