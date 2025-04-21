@@ -54,7 +54,7 @@ def add_page_number(pdf):
     pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
     pdf.cell(0, 10, f"{pdf.page_no()}", 0, 0, "R")
 
-def convert_docstring_to_pdf(docstrings):
+def convert_docstring_to_pdf(docstrings, output_file):
     pdf = CustomPDF()
 
     pdf.set_left_margin(PDF_CONFIG["margin_left"])
@@ -78,4 +78,4 @@ def convert_docstring_to_pdf(docstrings):
             pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
         pdf.multi_cell(0, 10, line)
 
-    pdf.output("docstrings.pdf")    
+    pdf.output(f"{output_file}.pdf")    
