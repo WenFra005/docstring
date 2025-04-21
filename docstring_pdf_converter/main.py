@@ -31,7 +31,7 @@ def main():
     module_name = input("Nome do módulo (sem .py): ")
     module_name = importlib.import_module(module_name)
     docstrings = extract_docstrings(module_name)
-    convert_docstring_to_pdf(pdf, docstrings)
+    convert_docstring_to_pdf(docstrings)
 
     output_file = input("Nome do arquivo de saída (sem extensão): ")
     pdf.output(f"{output_file}.pdf")
