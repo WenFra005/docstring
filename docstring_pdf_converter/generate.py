@@ -44,6 +44,11 @@ def add_page_number(pdf):
 
 def convert_docstring_to_pdf(pdf, docstrings):
     
+    pdf.set_left_margin(PDF_CONFIG["margin_left"])
+    pdf.set_top_margin(PDF_CONFIG["margin_top"])
+    pdf.set_right_margin(PDF_CONFIG["margin_right"])
+    pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["margin_bottom"])
+
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["break_margin"])
 
