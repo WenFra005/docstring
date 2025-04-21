@@ -23,24 +23,27 @@ class CustomPDF(FPDF):
 
 def extract_docstrings(module):
     module_counter = 1
-    docstrings = [f"{module_counter}.   {module.__name__}\n"]
-    function_counter = 1 
+    class_counter = 1  # Inicializa o contador de classes fora do loop principal
+    function_counter = 1  # Inicializa o contador de funções no nível do módulo
+    docstrings = [f"{module_counter}.   {module.__name__}\n"]  # Nome do módulo
+
     for name, obj in inspect.getmembers(module):
         if inspect.isclass(obj):
-            class_counter = 1
-            docstrings.append(f"{module_counter}.{class_counter}    {name}\n")  
-            method_counter = 1  
+            docstrings.append(f"{module_counter}.{class_counter}    {name}\n")  # Nome da classe
+            method_counter = 1  # Inicializa o contador de métodos para cada classe
             for method_name, method in inspect.getmembers(obj, inspect.isfunction):
                 docstring = inspect.getdoc(method)
                 if docstring:
-                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter}   {method_name}\n{docstring}\n")  # Método
+                    docstrings.append(f"{module_counter}.{class_counter}.{method_counter}   "
+                                      f"{method_name}\n{docstring}\n")  # Método
                     method_counter += 1
-            class_counter += 1
+            class_counter += 1  # Incrementa o contador de classes
         elif inspect.isfunction(obj):
             docstring = inspect.getdoc(obj)
             if docstring:
                 docstrings.append(f"{module_counter}.{function_counter}     {name}\n{docstring}\n")  # Função
-                function_counter += 1 
+                function_counter += 1  # Incrementa o contador de funções no nível do módulo
+
     return "".join(docstrings)
 
 
