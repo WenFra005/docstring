@@ -2,7 +2,6 @@ from unittest.mock import patch, MagicMock
 from docstring_pdf_converter.generate import extract_docstrings, convert_docstring_to_pdf
 
 def test_extract_docstrings():
-    # Mock module with classes, methods, and functions
     class MockClass:
         """Mock class docstring."""
         def mock_method(self):
@@ -18,10 +17,8 @@ def test_extract_docstrings():
     mock_module.MockClass = MockClass
     mock_module.mock_function = mock_function
 
-    # Call the function
     result = extract_docstrings(mock_module)
 
-    # Expected output com um único espaço entre a numeração e o nome
     expected = (
         "1. mock_module\n"
         "1.1 MockClass\n"
@@ -29,16 +26,13 @@ def test_extract_docstrings():
         "1.2 mock_function\nMock function docstring.\n"
     )
 
-    # Comparação direta sem normalização, pois o formato foi ajustado
     assert result == expected
 
 @patch("docstring_pdf_converter.generate.CustomPDF")
 def test_convert_docstring_to_pdf(mock_pdf_class):
-    # Mock CustomPDF instance
     mock_pdf_instance = MagicMock()
     mock_pdf_class.return_value = mock_pdf_instance
 
-    # Input data
     docstrings = "1.   mock_module\n1.1    MockClass\n1.1.1   mock_method\nMock method docstring.\n"
     cover_info = {
         "title": "Test Title",
@@ -51,10 +45,8 @@ def test_convert_docstring_to_pdf(mock_pdf_class):
     }
     output_file = "test_output"
 
-    # Call the function
     convert_docstring_to_pdf(docstrings, cover_info, output_file)
 
-    # Assertions
     mock_pdf_class.assert_called_once_with(cover_info)
     mock_pdf_instance.set_left_margin.assert_called_once_with(30)
     mock_pdf_instance.set_top_margin.assert_called_once_with(30)
