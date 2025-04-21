@@ -44,18 +44,6 @@ def extract_docstrings(module):
                 function_counter += 1
     return "\n".join(docstrings)
 
-def add_header(pdf, cover_info):
-    pdf.set_y(PDF_CONFIG["margin_top"])
-    pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-
-    pdf.cell(0, 10, f"Autor: {cover_info['author']}", ln=0, align="L")
-    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 100)
-    pdf.cell(0, 10, f"Instituição: {cover_info['institution']}", ln=1, align="R")
-
-    pdf.cell(0, 10, f"Local: {cover_info['city']} - {cover_info['state']}", ln=0, align="L")
-    pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 100)
-    pdf.cell(0, 10, f"Ano: {cover_info['year']}", ln=1, align="R")
-
 def add_page_number(pdf):
     pdf.set_y(10)
     pdf.set_x(pdf.w - PDF_CONFIG["margin_right"] - 20)
