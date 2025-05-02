@@ -1,5 +1,5 @@
 from unittest.mock import patch, MagicMock
-from docstring_pdf_converter.generate import extract_docstrings, convert_docstring_to_pdf
+from DocPDF.generate import extract_docstrings, convert_docstring_to_pdf
 
 def test_extract_docstrings():
     class MockClass:
@@ -28,7 +28,7 @@ def test_extract_docstrings():
 
     assert result == expected
 
-@patch("docstring_pdf_converter.generate.CustomPDF")
+@patch("DocPDF.generate.CustomPDF")
 def test_convert_docstring_to_pdf(mock_pdf_class):
     mock_pdf_instance = MagicMock()
     mock_pdf_class.return_value = mock_pdf_instance

@@ -1,6 +1,6 @@
 import inspect
 from fpdf import FPDF
-from docstring_pdf_converter.config import PDF_CONFIG
+from DocPDF.config import PDF_CONFIG
 
 class CustomPDF(FPDF):
     def __init__(self, cover_info):
