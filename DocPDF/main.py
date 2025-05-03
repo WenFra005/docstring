@@ -4,8 +4,6 @@ from fpdf import FPDF
 from docpdf.generate import extract_docstrings, convert_docstring_to_pdf
 
 def main():
-    pdf = FPDF()
-
     print("Bem-vindo ao conversor de docstrings para PDF!")
     print("Por favor, preencha as informações a seguir:")
 
@@ -25,11 +23,10 @@ def main():
         "state": state,
         "year": datetime.now().year
     }
-    pdf.add_page()
 
     module_name = input("Nome do módulo (sem .py): ")
-    module_name = importlib.import_module(module_name)
-    docstrings = extract_docstrings(module_name)
+    module = importlib.import_module(module_name)
+    docstrings = extract_docstrings(module)
 
     output_file = input("Nome do arquivo de saída (sem extensão): ")
     convert_docstring_to_pdf(docstrings, cover_info, output_file)
@@ -38,4 +35,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
