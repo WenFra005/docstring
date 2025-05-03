@@ -1,9 +1,9 @@
-# 📝 DocPDF
+# 📝 docpdf
 
-O **DocPDF** é uma ferramenta simples e útil para gerar uma documentação limpa e organizada de projetos Python. Ele extrai os comentários de documentação (docstrings) direto do código-fonte e cria um PDF com todas essas informações — pronto para compartilhar ou consultar.
+O **docpdf** é uma ferramenta simples e útil para gerar uma documentação limpa e organizada de projetos Python. Ele extrai os comentários de documentação (docstrings) direto do código-fonte e cria um PDF com todas essas informações — pronto para compartilhar ou consultar.
 
 > 📦 **Disponível no PyPI**: você pode instalar com apenas um comando!  
-> 👉 `pip install DocPDF`
+> 👉 `pip install docpdf`
 
 ## 🚀 Para que serve?
 
@@ -24,13 +24,13 @@ Você pode usar essa ferramenta para:
 ### Opção 1: Instalar via PyPI (recomendado)
 
 ```bash
-pip install DocPDF
+pip install docpdf
 ```
 
 Depois de instalado, você pode usar o comando:
 
 ```bash
-DocPDF main.py
+docpdf main.py
 ```
 
 Por padrão, ele irá escanear o diretório atual e gerar um PDF com o nome `docstrings_output.pdf`.
@@ -61,7 +61,7 @@ Por padrão, ele irá escanear o diretório atual e gerar um PDF com o nome `doc
 Após a instalação, vá até a pasta do seu projeto (onde estão seus arquivos `.py`) e execute:
 
 ```bash
-DocPDF main.py
+docpdf main.py
 ```
 
 Um PDF será gerado no mesmo diretório contendo todas as docstrings encontradas.
@@ -69,7 +69,7 @@ Um PDF será gerado no mesmo diretório contendo todas as docstrings encontradas
 Você também pode usar o comando com um caminho específico:
 
 ```bash
-DocPDF path/para/seu/projeto
+docpdf path/para/seu/projeto
 ```
 
 ## 📁 Exemplo de uso

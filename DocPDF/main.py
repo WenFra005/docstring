@@ -1,7 +1,7 @@
 import importlib
 from datetime import datetime
 from fpdf import FPDF
-from DocPDF.generate import extract_docstrings, convert_docstring_to_pdf
+from docpdf.generate import extract_docstrings, convert_docstring_to_pdf
 
 def main():
     pdf = FPDF()
