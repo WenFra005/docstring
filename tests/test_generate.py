@@ -33,7 +33,7 @@ def test_convert_docstring_to_pdf(mock_pdf_class):
     mock_pdf_instance = MagicMock()
     mock_pdf_class.return_value = mock_pdf_instance
 
-    docstrings = "1.   mock_module\n1.1    MockClass\n1.1.1   mock_method\nMock method docstring.\n"
+    docstrings = "1. mock_module\n1.1 MockClass\n1.1.1 mock_method\nMock method docstring.\n"
     cover_info = {
         "title": "Test Title",
         "subtitle": "Test Subtitle",
@@ -48,10 +48,8 @@ def test_convert_docstring_to_pdf(mock_pdf_class):
     convert_docstring_to_pdf(docstrings, cover_info, output_file)
 
     mock_pdf_class.assert_called_once_with(cover_info)
-    mock_pdf_instance.set_left_margin.assert_called_once_with(30)
-    mock_pdf_instance.set_top_margin.assert_called_once_with(30)
-    mock_pdf_instance.set_right_margin.assert_called_once_with(20)
+    mock_pdf_instance.set_margins.assert_called_once_with(left=30, top=30, right=20)
     mock_pdf_instance.set_auto_page_break.assert_called_once_with(auto=True, margin=20)
     mock_pdf_instance.add_page.assert_called()
-    mock_pdf_instance.multi_cell.assert_any_call(0, 10, "1.   mock_module")
+    mock_pdf_instance.multi_cell.assert_any_call(0, 10, "1. mock_module", align="J")
     mock_pdf_instance.output.assert_called_once_with("test_output.pdf")
