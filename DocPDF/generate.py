@@ -66,21 +66,19 @@ def extract_docstrings(module):
 def convert_docstring_to_pdf(docstrings, cover_info, output_file):
     pdf = CustomPDF(cover_info)
 
-    pdf.set_margins(left=PDF_CONFIG["margin_left"], top=PDF_CONFIG["margin_top"], right=PDF_CONFIG["margin_right"])
+    pdf.set_left_margin(PDF_CONFIG["margin_left"])
+    pdf.set_top_margin(PDF_CONFIG["margin_top"])
+    pdf.set_right_margin(PDF_CONFIG["margin_right"])
     pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["margin_bottom"])
 
     pdf.add_page()
 
-    for line in docstrings.split("\n"):
-        if line.startswith("1. "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_1"]["style"], PDF_CONFIG["title_format"]["level_1"]["size"])
-        elif line.startswith("1.1 "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_2"]["style"], PDF_CONFIG["title_format"]["level_2"]["size"])
-        elif line.startswith("1.1.1 "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_3"]["style"], PDF_CONFIG["title_format"]["level_3"]["size"])
-        else:
-            pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
-        pdf.multi_cell(0, 10, line, align="J")
+    available_width = pdf.w - pdf.l_margin - pdf.r_margin
 
+    for line in docstrings.split("\n"):
+        if line.strip():  
+            pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
+            pdf.multi_cell(available_width, 10, line.strip(), align="J")
+            pdf.ln(5) 
     pdf.output(f"{output_file}.pdf")
 
