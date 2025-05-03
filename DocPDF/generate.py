@@ -10,54 +10,34 @@ class CustomPDF(FPDF):
     def header(self):
         self.set_y(10)
         self.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-        self.cell(0, 10, self.cover_info["title"], 0, 1, "C")
+        self.cell(0, 10, self.cover_info["title"], new_x="LMARGIN", new_y="NEXT", align="C")
         self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
-        self.cell(0, 10, f"Autor: {self.cover_info['author']}", 0, 1, "C")
-        self.cell(0, 10, f"Local: {self.cover_info['city']} - {self.cover_info['state']} | Ano: {self.cover_info['year']}", 0, 1, "C")
+        self.cell(0, 10, f"Autor: {self.cover_info['author']}", new_x="LMARGIN", new_y="NEXT", align="C")
+        self.cell(0, 10, f"Local: {self.cover_info['city']} - {self.cover_info['state']} | Ano: {self.cover_info['year']}", new_x="LMARGIN", new_y="NEXT", align="C")
         self.ln(5)
 
     def footer(self):
         self.set_y(-15)
         self.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"] - 2)
-        self.cell(0, 10, f"{self.page_no()}", 0, 0, "R")
+        self.cell(0, 10, f"{self.page_no()}", align="R")
 
 def generate_cover(pdf, cover_info):
-
-    pdf.set_left_margin(PDF_CONFIG["margin_left"])
-    pdf.set_right_margin(PDF_CONFIG["margin_right"])
-    pdf.set_top_margin(PDF_CONFIG["margin_top"])
-
+    pdf.set_margins(left=PDF_CONFIG["margin_left"], top=PDF_CONFIG["margin_top"], right=PDF_CONFIG["margin_right"])
     pdf.add_page()
 
     pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-    pdf.cell(0, 10,
-             f"{cover_info['institution'].upper() 
-                if cover_info['institution'] 
-                else 'AUTOR INDEPENDENTE'}", ln=1, align="C"
-            )
+    pdf.cell(0, 10, cover_info.get("institution", "AUTOR INDEPENDENTE").upper(), new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.ln(20)
 
-    for _ in range(4):
-        pdf.cell(10)
+    pdf.cell(0, 10, cover_info.get("author", "NOME DO AUTOR").upper(), new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.ln(20)
 
-    pdf.cell(0, 10, 
-             f"{cover_info['author'].upper() 
-                if cover_info['author'] 
-                else 'NOME DO AUTOR'}", ln=1, align="C"
-            )
+    pdf.cell(0, 10, cover_info.get("title", "").upper(), new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.cell(0, 10, cover_info.get("subtitle", "").upper(), new_x="LMARGIN", new_y="NEXT", align="C")
 
-    for _ in range(3):  
-        pdf.cell(10)
-
-    pdf.cell(0, 10, f"{cover_info['title'].upper()}", ln=1, align="C")
-    pdf.cell(0, 10, f"{cover_info['subtitle'].upper()}", ln=1, align="C")
-
-    pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-    pdf_height = pdf.h - PDF_CONFIG["margin_bottom"]
-    pdf.set_y(pdf_height - 20)
-    pdf.set_font(PDF_CONFIG["font"], "B", PDF_CONFIG["font_size"])
-    pdf.cell(0, 10, f"{cover_info['city'].upper()} - {cover_info['state'].upper()}", ln=1, align="C")
-    pdf.cell(0, 10, f"{cover_info['year']}", ln=1, align="C")
-
+    pdf.set_y(-30)
+    pdf.cell(0, 10, f"{cover_info['city'].upper()} - {cover_info['state'].upper()}", new_x="LMARGIN", new_y="NEXT", align="C")
+    pdf.cell(0, 10, str(cover_info["year"]), new_x="LMARGIN", new_y="NEXT", align="C")
 
 def extract_docstrings(module):
     module_counter = 1
@@ -83,29 +63,24 @@ def extract_docstrings(module):
 
     return "".join(docstrings)
 
-def convert_docstring_to_pdf(docstrings, cover_info ,output_file):
+def convert_docstring_to_pdf(docstrings, cover_info, output_file):
     pdf = CustomPDF(cover_info)
 
-    pdf.set_left_margin(PDF_CONFIG["margin_left"])
-    pdf.set_top_margin(PDF_CONFIG["margin_top"])
-    pdf.set_right_margin(PDF_CONFIG["margin_right"])
+    pdf.set_margins(left=PDF_CONFIG["margin_left"], top=PDF_CONFIG["margin_top"], right=PDF_CONFIG["margin_right"])
     pdf.set_auto_page_break(auto=True, margin=PDF_CONFIG["margin_bottom"])
 
     pdf.add_page()
 
     for line in docstrings.split("\n"):
-        if line.startswith("1.     "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_1"]["style"],
-                         PDF_CONFIG["title_format"]["level_1"]["size"])
-        elif line.startswith("1.1   "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_2"]["style"],
-                         PDF_CONFIG["title_format"]["level_2"]["size"])
+        if line.startswith("1. "):
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_1"]["style"], PDF_CONFIG["title_format"]["level_1"]["size"])
+        elif line.startswith("1.1 "):
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_2"]["style"], PDF_CONFIG["title_format"]["level_2"]["size"])
         elif line.startswith("1.1.1 "):
-            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_3"]["style"],
-                         PDF_CONFIG["title_format"]["level_3"]["size"])
+            pdf.set_font(PDF_CONFIG["font"], PDF_CONFIG["title_format"]["level_3"]["style"], PDF_CONFIG["title_format"]["level_3"]["size"])
         else:
             pdf.set_font(PDF_CONFIG["font"], "", PDF_CONFIG["font_size"])
-        pdf.multi_cell(0, 10, line)
+        pdf.multi_cell(0, 10, line, align="J")
 
     pdf.output(f"{output_file}.pdf")
 
